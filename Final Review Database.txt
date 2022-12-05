@@ -1,0 +1,65 @@
+create table admin(
+	ad_id int(8) primary key,
+	ad_email varchar(30) not null unique,
+	ad_name varchar(20) not null,
+	ad_password varchar(20) not null	
+);
+
+
+create table category(
+	category_id int(8) primary key,
+	category_name varchar(25) not null unique,
+	category_description varchar(100)
+);
+
+create table products(
+	product_id int(8) primary key,
+	product_name varchar(20) not null,
+	product_price numeric(8,2) not null,
+	product_brand varchar(20) not null, 
+	product_description varchar(100) not null,
+	category_id int references category(category_id)
+);
+
+create table event(
+	event_id int(8) primary key,
+	event_name varchar(20) unique not null,
+	event_startdate date not null,
+	event_enddate date not null
+);
+
+create table coupon(
+	coupon_id int(8) primary key,
+	coupon_discount numeric(4,2) not null,
+	category_id numeric references category(category_id)
+);
+
+create table customer(
+	customer_id int(8) primary key,
+	customer_email varchar(20) not null unique,
+	customer_name varchar(20) not null,
+	customer_add varchar(100) not null,
+	customer_ph int(10) not null unique,
+	customer_password varchar(20) not null	
+);
+
+create table cart(
+	cart_id int(8) not null unique,
+	quantity int not null,
+	customer_id int references customer(customer_id),
+	product_id int references product(product_id)	
+);
+
+create table order_table(
+	order_id int(8) not null unique,
+	quantity int not null,
+	product_id int references products(product_id),
+	customer_id int references customer(customer_id)		
+);
+
+create table payment(
+	pay_id int(8) primary key,
+	amount numeric(8,2) not null,
+	discount numeric(4,2) not null,
+	order_id int references order_table(order_id)
+);
